@@ -11,8 +11,14 @@ The script performs the following steps:
 from src.preprocess import load_images, save_data
 from src.train_model import train_model
 from src.gui import create_gui
+import os
 
 if __name__ == '__main__':
+
+    # step 0: create directories if they don't exist
+    os.makedirs('data/processed', exist_ok=True)
+    os.makedirs('models', exist_ok=True)
+    
     # Step 1: Load and preprocess the training images
     train_images = load_images('data/train')
     
