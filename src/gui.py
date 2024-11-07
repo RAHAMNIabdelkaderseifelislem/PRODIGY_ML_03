@@ -1,46 +1,43 @@
 """
-This module provides a GUI for classifying images as 'Cat' or 'Dog' using a pre-trained SVM model.
+This module provides a function to create a GUI for classifying new images using a saved SVM model.
 
-The GUI is built using the Gradio library, which allows users to upload an image and receive a classification result.
+The GUI is created using the Gradio library and allows the user to select an image file and get a prediction of the class of the image.
 
-Functions:
-- classify_image: Classifies an image using a saved SVM model.
-- create_gui: Creates and launches the Gradio interface for image classification.
 """
 
 import gradio as gr
 from src.predict import predict_image
 
+
 def classify_image(image):
     """
-    Classify an image as 'Cat' or 'Dog' using a saved SVM model.
+    This function takes an image file and uses the predict_image function to get a prediction of the class of the image.
 
     Parameters
     ----------
     image : str
-        The file path to the image to classify.
+        The path to the image file.
 
     Returns
     -------
     str
-        The predicted class ('Cat' or 'Dog').
+        The predicted class of the image.
     """
-    # Predict the class of the image using the SVM model.
-    prediction = predict_image(image, 'models/svm.pkl')
+    prediction = predict_image(image.name, 'models/svm.pkl')
     return prediction
+
 
 def create_gui():
     """
-    Create and launch the Gradio interface for image classification.
+    This function creates a Gradio interface for classifying new images.
 
-    This function sets up the input and output interfaces for the Gradio app
-    and launches it in a web browser.
+    The interface takes an image file as input and outputs the predicted class of the image.
     """
-    # Define the input as an image file path and the output as a label.
-    inputs = gr.inputs.Image(type='filepath')
-    outputs = gr.outputs.Label(num_top_classes=1)
-    
-    # Create the Gradio interface and launch it.
-    interface = gr.Interface(fn=classify_image, inputs=inputs, outputs=outputs)
+    # Updated to use current Gradio API
+    interface = gr.Interface(
+        fn=classify_image,
+        inputs=gr.Image(type="filepath"),  # Direct usage instead of gr.inputs
+        outputs=gr.Label(num_top_classes=1)  # Direct usage instead of gr.outputs
+    )
     interface.launch()
 
